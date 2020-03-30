@@ -3,4 +3,7 @@
 !qmk_firmware\keyboards\handwired\dactyl_manuform\5x6\keymaps\jrc\config.h
 !qmk_firmware\keyboards\handwired\dactyl_manuform\5x6\keymaps\jrc\keymap.c
 !*.stl
-!**.hex
+!**.hex 
+!qmk_firmware\keyboards\handwired\dactyl_manuform\5x6\5x6.h
+!qmk_firmware\keyboards\handwired\dactyl_manuform\5x6\config.h
+!qmk_firmware\keyboards\handwired\dactyl_manuform\5x6\rules.mk
