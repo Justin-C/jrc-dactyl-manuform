@@ -18,6 +18,7 @@ static bool rbrc_down = false;
 static bool plus_down = false;
 static bool onMacLayer = false;
 static bool raise_down = false;
+static bool lower_down = false;
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -61,8 +62,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_RAISE] = LAYOUT_5x6(
        KC_F12 , KC_F1 , KC_F2 , KC_F3 , KC_F4 , KC_F5 ,                        KC_F6  , KC_F7 , KC_F8 , KC_F9 ,KC_F10 ,KC_F11 ,
-       _______,_______,_______,_______,_______,_______,                        _______,_______,_______,_______ ,KC_LBRC,KC_RBRC,
-       _______,_______,_______  ,_______,_______,_______,                        _______,_______,_______,_______,_______,_______,
+       _______,_______,_______,_______,_______,_______,                        _______,_______,_______,_______ ,LSFT(KC_LBRC),LSFT(KC_RBRC),
+       _______,_______,_______  ,_______,_______,_______,                        _______,_______,_______,_______, KC_LBRC,KC_RBRC,
        _______,_______,_______,_______,_______,_______,                        _______,_______,_______,_______,_______,_______,
        KC_MUTE,                                _______,_______,            KC_EQL ,_______,
                                                _______,_______,            _______,_______,
@@ -76,6 +77,20 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
 {
     switch (keycode)
     {
+    case LOWER:
+        if (record->event.pressed)
+        {
+            lower_down = true;
+            layer_on(_LOWER);
+        }
+        else
+        {
+            lower_down = false;
+            layer_off(_LOWER);
+
+        }
+        return false;
+        break;
     case RAISE:
         if (record->event.pressed)
         {
@@ -160,12 +175,16 @@ void encoder_update_user(uint8_t index, bool clockwise) {
     if (clockwise) {
         if(raise_down){
             tap_code(KC_PGUP);
-        }else{
+        }else if (lower_down) {
+            tap_code16(LCTL(LSFT(KC_TAB)));
+        } else {
             tap_code(KC_VOLD);
         }
     } else {
         if(raise_down){
             tap_code(KC_PGDN);
+        }else if (lower_down) {
+            tap_code16(LCTL(KC_TAB));
         }else{
             tap_code(KC_VOLU);
         }
